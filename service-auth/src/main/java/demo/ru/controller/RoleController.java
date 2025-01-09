@@ -31,13 +31,13 @@ public class RoleController {
     }
 
     @GetMapping("/get/{id}")
-    public RoleDto getRole(@RequestParam Integer id) {
+    public RoleDto getRoleById(@PathVariable @PositiveOrZero Integer id) {
         log.debug("Контроллер: Запрос на получение роли с id = {}", id);
         return roleService.findById(id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteRole(@RequestParam Integer id) {
+    public void deleteRoleById(@PathVariable @PositiveOrZero Integer id) {
         log.debug("Контроллер: Запрос на удаление роли с id = {}", id);
         roleService.deleteRole(id);
     }

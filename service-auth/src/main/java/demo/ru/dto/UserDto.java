@@ -15,7 +15,7 @@ public class UserDto {
     Long id;
 
     @NotNull
-    @Size(min = 1, max = 200, message = "Name is not valid: min = 1, max = 200")
+    @Size(min = 1, max = 20, message = "Name is not valid: min = 1, max = 20")
     String name;
 
     @NotNull
