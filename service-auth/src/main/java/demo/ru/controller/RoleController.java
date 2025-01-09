@@ -13,7 +13,8 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/roles")
+@RequiredArgsConstructor
 public class RoleController {
     private final RoleService roleService;
 
