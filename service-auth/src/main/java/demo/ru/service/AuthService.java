@@ -6,8 +6,8 @@ import demo.ru.dto.UserDto;
 import demo.ru.throwable.AuthorizedException;
 import demo.ru.throwable.ValidationException;
 import demo.ru.utils.JwtTokenUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,13 +16,11 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AuthService {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private JwtTokenUtils jwtTokenUtils;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final JwtTokenUtils jwtTokenUtils;
+    private final AuthenticationManager authenticationManager;
 
 
     public JwtResponse createJwtToken(JwtRequest request) {
@@ -39,16 +37,20 @@ public class AuthService {
     }
 
 
-    public UserDto createNewUser(UserDto userDto) {
+    public UserDto validAndCreateNewUser(UserDto userDto) {
         log.debug("Сервис авторизации: получен запрос на регистрацию пользователя: {}", userDto);
-        if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
-            throw new ValidationException("Пароли не совпадают");
-        }
+        if (userDto.getPassword() != null) {
+            if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+                throw new ValidationException("Пароли не совпадают");
+            }
 
-        if (userService.findByName(userDto.getName()) != null) {
-            throw new ValidationException("Пользователь с этим именем уже существует");
+            if (userService.findByName(userDto.getName()) != null) {
+                throw new ValidationException("Пользователь с этим именем уже существует");
+            }
+            log.debug("Сервис авторизации: пользователь прошёл валидацию");
+            return userService.createNewUser(userDto);
+        } else {
+            throw new ValidationException("Пароль не указан");
         }
-        log.debug("Сервис авторизации: пользователь прошёл валидацию");
-        return userService.createNewUser(userDto);
     }
 }

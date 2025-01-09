@@ -3,8 +3,9 @@ package demo.ru.controller;
 import demo.ru.dto.RoleDto;
 import demo.ru.service.RoleService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.PositiveOrZero;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/role")
 public class RoleController {
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
