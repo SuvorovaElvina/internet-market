@@ -3,8 +3,9 @@ package demo.ru.controller;
 import demo.ru.dto.RoleDto;
 import demo.ru.service.RoleService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.PositiveOrZero;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +13,10 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/roles")
+@RequiredArgsConstructor
 public class RoleController {
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -31,13 +32,13 @@ public class RoleController {
     }
 
     @GetMapping("/get/{id}")
-    public RoleDto getRole(@RequestParam Integer id) {
+    public RoleDto getRoleById(@PathVariable @PositiveOrZero Integer id) {
         log.debug("Контроллер: Запрос на получение роли с id = {}", id);
         return roleService.findById(id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteRole(@RequestParam Integer id) {
+    public void deleteRoleById(@PathVariable @PositiveOrZero Integer id) {
         log.debug("Контроллер: Запрос на удаление роли с id = {}", id);
         roleService.deleteRole(id);
     }

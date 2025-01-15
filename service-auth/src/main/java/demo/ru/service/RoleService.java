@@ -6,19 +6,18 @@ import demo.ru.mapper.RoleMapper;
 import demo.ru.repository.RoleRepository;
 import demo.ru.throwable.NotFoundException;
 import demo.ru.throwable.ValidationException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class RoleService {
-    @Autowired
-    private RoleRepository repository;
-    @Autowired
-    private RoleMapper mapper;
+    private final RoleRepository repository;
+    private final RoleMapper mapper;
 
     public RoleDto createNewRole(RoleDto roleDto) {
         log.debug("Сервис ролей: Получен запрос на создание: {}", roleDto);
